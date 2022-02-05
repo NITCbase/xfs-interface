@@ -219,6 +219,10 @@ int importRelation(char *fileName) {
 		return FAILURE;
 	}
 
+    if (numOfAttributes > 125) {
+        return E_MAXATTRS;
+    }
+
 	firstLine[numOfCharactersInLine - 1] = '\0';
 	int currentCharIndexInLine = 0, attrOffsetIterator, attributeIndexIterator;
 	char attributeNames[numOfAttributes][ATTR_SIZE];
