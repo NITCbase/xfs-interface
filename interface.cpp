@@ -616,7 +616,34 @@ int regexMatchAndExecute(const string input_command) {
 	return SUCCESS;
 }
 
-int main() {
+string DISK_PATH, DISK_RUN_COPY_PATH, FILES_PATH;
+
+int main(int argc, char* argv[]) {
+	string executable_path(argv[0]);
+	int index = executable_path.find("XFS-Interface");
+	int root_path_length = executable_path.length() - (strlen("./")+ strlen("XFS-Interface"));
+	string root_path("");
+
+	/*
+	* NITCbase/Files
+	* NITCbase/Disk
+	* NITCbase/XFS_Interface/XFS-Interface
+	*/
+	if (root_path_length) {
+		string root_path = executable_path.substr(2, root_path_length-strlen("XFS_Interface/"));
+		DISK_PATH = DISK_RUN_COPY_PATH = FILES_PATH = root_path;
+		DISK_PATH += "Disk/disk";
+		DISK_RUN_COPY_PATH += "Disk/disk_run_copy";
+		FILES_PATH += "Files/";
+	}
+	else {
+		DISK_PATH = "../Disk/disk";
+		DISK_RUN_COPY_PATH = "../Disk/disk_run_copy";
+		FILES_PATH = "../Files/";
+	}
+	cout << DISK_PATH << " " << DISK_RUN_COPY_PATH << " " << FILES_PATH << endl;
+
+
 	// Initializing Open Relation Table
 	OpenRelTable::initializeOpenRelationTable();
 
