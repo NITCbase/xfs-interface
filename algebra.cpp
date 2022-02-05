@@ -215,7 +215,7 @@ int insert(std::vector<std::string> attributeTokens, char *table_name) {
 
 	// 'temp' is used for internal purposes as of now
 	if (std::strcmp(table_name, TEMP) == 0) {
-		std::cout << "insert operation not permitted on relation 'temp'(used for internal purposes)" << std::endl;
+		std::cout << "Insert operation not permitted on relation 'temp'(used for internal purposes)" << std::endl;
 		return E_INVALID;
 	}
 
