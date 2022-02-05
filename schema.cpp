@@ -22,11 +22,11 @@ Attribute *make_attrcatrec(char relname[ATTR_SIZE], char attrname[ATTR_SIZE], in
  */
 int createRel(char relname[ATTR_SIZE], int nAttrs, char attrs[][ATTR_SIZE], int attrtypes[]) {
 
-//	int status = OpenRelTable::checkIfOpenRelTableHasFreeEntry();
-//	if (status == FAILURE) {
-//		std::cout << "createRel not possible as openRel failed\n";
-//		return E_CACHEFULL;
-//	}
+	// 'temp' is used for internal purposes as of now
+	if (std::strcmp(relname, TEMP) == 0) {
+		std::cout << "create operation not permitted on relation 'temp'(used for internal purposes)" << std::endl;
+		return E_INVALID;
+	}
 
 	Attribute attrval;
 	strcpy(attrval.sval, relname);
@@ -47,7 +47,6 @@ int createRel(char relname[ATTR_SIZE], int nAttrs, char attrs[][ATTR_SIZE], int 
 	if (check_duplicate_attributes(nAttrs, attrs) == E_DUPLICATEATTR) {
 		return E_DUPLICATEATTR;
 	}
-
 
 	Attribute *relcatrec = make_relcatrec(relname, nAttrs, 0, -1,
 	                                      -1);
@@ -76,6 +75,7 @@ int createRel(char relname[ATTR_SIZE], int nAttrs, char attrs[][ATTR_SIZE], int 
 
 int deleteRel(char relname[ATTR_SIZE]) {
 	if (strcmp(relname, "RELATIONCAT") == 0 || strcmp(relname, "ATTRIBUTECAT") == 0) {
+		std::cout << "Drop operation not permitted for Relation Catalog or Attribute Catalog" << std::endl;
 		return E_INVALID;
 	}
 

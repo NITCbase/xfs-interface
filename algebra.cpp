@@ -208,6 +208,17 @@ int select(char srcrel[ATTR_SIZE], char targetrel[ATTR_SIZE], char attr[ATTR_SIZ
 
 int insert(std::vector<std::string> attributeTokens, char *table_name) {
 
+	if (strcmp(table_name, "RELATIONCAT") == 0 || strcmp(table_name, "ATTRIBUTECAT") == 0) {
+		std::cout << "Insert operation not permitted for Relation Catalog or Attribute Catalog" << std::endl;
+		return E_INVALID;
+	}
+
+	// 'temp' is used for internal purposes as of now
+	if (std::strcmp(table_name, TEMP) == 0) {
+		std::cout << "insert operation not permitted on relation 'temp'(used for internal purposes)" << std::endl;
+		return E_INVALID;
+	}
+
 	// check if relation is open
 	int relId = OpenRelTable::getRelationId(table_name);
 	if (relId == E_RELNOTOPEN) {
@@ -252,6 +263,10 @@ int insert(std::vector<std::string> attributeTokens, char *table_name) {
 }
 
 int insert(char relName[ATTR_SIZE], char *fileName) {
+
+	if (strcmp(relName, "RELATIONCAT") == 0 || strcmp(relName, "ATTRIBUTECAT") == 0) {
+		return E_INVALID;
+	}
 
 	char currentCharacter;
 
