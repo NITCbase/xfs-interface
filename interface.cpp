@@ -129,13 +129,13 @@ int regexMatchAndExecute(const string input_command) {
 		cout << "Disk formatted" << endl;
 	} else if (regex_match(input_command, dump_rel)) {
 		dump_relcat();
-		cout << "Dumped relation catalog to " << Output_Files_Path << "relation_catalog" << endl;
+		cout << "Dumped relation catalog to " << OUTPUT_FILES_PATH << "relation_catalog" << endl;
 	} else if (regex_match(input_command, dump_attr)) {
 		dump_attrcat();
-		cout << "Dumped attribute catalog to " << Output_Files_Path << "attribute_catalog" << endl;
+		cout << "Dumped attribute catalog to " << OUTPUT_FILES_PATH << "attribute_catalog" << endl;
 	} else if (regex_match(input_command, dump_bmap)) {
 		dumpBlockAllocationMap();
-		cout << "Dumped block allocation map to " << Output_Files_Path << "block_allocation_map" << endl;
+		cout << "Dumped block allocation map to " << OUTPUT_FILES_PATH << "block_allocation_map" << endl;
 	} else if (regex_match(input_command, list_all)) {
 		ls();
 		char rel[ATTR_SIZE], attr[ATTR_SIZE];
@@ -143,7 +143,7 @@ int regexMatchAndExecute(const string input_command) {
 		string_to_char_array("key", attr, 15);
 	} else if (regex_match(input_command, imp)) {
 		string filepath_str;
-		string complete_filepath = Input_Files_Path;
+		string complete_filepath = INPUT_FILES_PATH;
 
 		regex_search(input_command, m, imp);
 		filepath_str = m[2];
@@ -170,7 +170,7 @@ int regexMatchAndExecute(const string input_command) {
 		string tableName = m[2];
 
 		string filePath = m[3];
-		filePath = Output_Files_Path + filePath;
+		filePath = OUTPUT_FILES_PATH + filePath;
 
 		char relname[ATTR_SIZE];
 		string_to_char_array(tableName, relname, ATTR_SIZE - 1);
@@ -395,7 +395,7 @@ int regexMatchAndExecute(const string input_command) {
 		regex_search(input_command, m, insert_multiple);
 		string tablename = m[3];
 		char relname[ATTR_SIZE];
-		string p = Input_Files_Path;
+		string p = INPUT_FILES_PATH;
 		string_to_char_array(tablename, relname, ATTR_SIZE - 1);
 		string t = m[6];
 		p = p + t;
@@ -662,38 +662,7 @@ int regexMatchAndExecute(const string input_command) {
 	return SUCCESS;
 }
 
-// defining extern variables declared in constants.h
-string Disk_Path, Disk_Run_Copy_Path, Files_Path, Input_Files_Path, Output_Files_Path, Batch_Files_Path;
-
 int main(int argc, char* argv[]) {
-	string executable_path(argv[0]);
-	int index = executable_path.find("XFS-Interface");
-	int root_path_length = executable_path.length() - (strlen("./")+ strlen("XFS-Interface"));
-
-	/*
-	* NITCbase/Files
-	* NITCbase/Disk
-	* NITCbase/XFS_Interface/XFS-Interface
-	*/
-	if (root_path_length) {
-		string root_path = executable_path.substr(2, root_path_length-strlen("XFS_Interface/"));
-		Disk_Path = Disk_Run_Copy_Path = Files_Path = Input_Files_Path = Output_Files_Path = Batch_Files_Path = root_path;
-		Disk_Path += "Disk/disk";
-		Disk_Run_Copy_Path += "Disk/disk_run_copy";
-		Files_Path += "Files/";
-		Input_Files_Path += "Files/Input_Files/";
-		Output_Files_Path += "Files/Output_Files/";
-		Batch_Files_Path += "Files/Batch_Execution_Files/";
-	}
-	else {
-		Disk_Path = "../Disk/disk";
-		Disk_Run_Copy_Path = "../Disk/disk_run_copy";
-		Files_Path = "../Files/";
-		Input_Files_Path += "../Files/Input_Files/";
-		Output_Files_Path += "../Files/Output_Files/";
-		Batch_Files_Path += "../Files/Batch_Execution_Files/";
-	}
-	// cout << DISK_PATH << " " << DISK_RUN_COPY_PATH << " " << FILES_PATH << endl;
 
 	// Initializing Open Relation Table
 	OpenRelTable::initializeOpenRelationTable();
@@ -945,7 +914,7 @@ void print16(char char_string_thing[ATTR_SIZE], bool newline) {
 
 // TODO: What to do when one line Fails - EXIT?
 int executeCommandsFromFile(const string fileName) {
-	const string filePath = Batch_Files_Path;
+	const string filePath = BATCH_FILES_PATH;
 	fstream commandsFile;
 	commandsFile.open(filePath + fileName, ios::in);
 	string command;

@@ -25,7 +25,7 @@ void writeAttributeToFile(FILE *fp, Attribute attribute, int type, int lastLineF
 
 void dump_relcat() {
 	string relation_catalog = "relation_catalog";
-	string filePath = Output_Files_Path + relation_catalog;
+	string filePath = OUTPUT_FILES_PATH + relation_catalog;
 	char fileName[filePath.length() + 1];
 	string_to_char_array(filePath, fileName, filePath.length() + 1);
 
@@ -72,7 +72,7 @@ void dump_relcat() {
 
 void dump_attrcat() {
 	string attribute_catalog = "attribute_catalog";
-	string filePath = Output_Files_Path + attribute_catalog;
+	string filePath = OUTPUT_FILES_PATH + attribute_catalog;
 	char fileName[filePath.length() + 1];
 	string_to_char_array(filePath, fileName, filePath.length() + 1);
 
@@ -122,7 +122,7 @@ void dump_attrcat() {
 }
 
 void dumpBlockAllocationMap() {
-	FILE *disk = fopen(&Disk_Path[0], "rb+");
+	FILE *disk = fopen(&DISK_PATH[0], "rb+");
 	fseek(disk, 0, SEEK_SET);
 	unsigned char blockAllocationMap[4 * BLOCK_SIZE];
 	fread(blockAllocationMap, 4 * BLOCK_SIZE, 1, disk);
@@ -132,7 +132,7 @@ void dumpBlockAllocationMap() {
 	char s[ATTR_SIZE];
 
 	string block_allocation_map = "block_allocation_map";
-	string filePath = Output_Files_Path + block_allocation_map;
+	string filePath = OUTPUT_FILES_PATH + block_allocation_map;
 
 	char fileName[filePath.length() + 1];
 	string_to_char_array(filePath, fileName, filePath.length() + 1);

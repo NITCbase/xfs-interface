@@ -10,7 +10,7 @@
 #include "block_access.h"
 
 int Disk::createDisk() {
-	FILE *disk = fopen(&Disk_Path[0], "wb+");
+	FILE *disk = fopen(&DISK_PATH[0], "wb+");
 	if(disk == nullptr)
 		return FAILURE;
 	fseek(disk, 0, SEEK_SET);
@@ -29,7 +29,7 @@ Disk::~Disk() {
 }
 
 int Disk::readBlock(unsigned char *block, int blockNum) {
-	FILE *disk = fopen(&Disk_Path[0], "rb");
+	FILE *disk = fopen(&DISK_PATH[0], "rb");
 	const int offset = blockNum * BLOCK_SIZE;
 	fseek(disk, offset, SEEK_SET);
 	fread(block, BLOCK_SIZE, 1, disk);
@@ -37,7 +37,7 @@ int Disk::readBlock(unsigned char *block, int blockNum) {
 }
 
 int Disk::writeBlock(unsigned char *block, int blockNum) {
-	FILE *disk = fopen(&Disk_Path[0], "wb");
+	FILE *disk = fopen(&DISK_PATH[0], "wb");
 	int offset = blockNum * BLOCK_SIZE;
 	fseek(disk, offset, SEEK_SET);
 	fwrite(block, BLOCK_SIZE, 1, disk);
@@ -50,7 +50,7 @@ int Disk::writeBlock(unsigned char *block, int blockNum) {
  * Set Relcat and Attrcat
  */
 void Disk::formatDisk() {
-	FILE *disk = fopen(&Disk_Path[0], "wb+");
+	FILE *disk = fopen(&DISK_PATH[0], "wb+");
 	const int reserved_blocks = 6;
 	const int offset = DISK_SIZE;
 
