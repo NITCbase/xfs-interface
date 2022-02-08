@@ -300,6 +300,10 @@ int importRelation(char *fileName) {
 	}
 	relationName[relname_iter] = '\0';
 
+	if (std::strcmp(relationName, TEMP) == 0) {
+		return E_CREATETEMP;
+	}
+
 	// CREATE RELATION
 	int ret;
 	ret = createRel(relationName, numOfAttributes, attributeNames, attrTypes);
