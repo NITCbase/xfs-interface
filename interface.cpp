@@ -622,7 +622,6 @@ int main(int argc, char* argv[]) {
 	string executable_path(argv[0]);
 	int index = executable_path.find("XFS-Interface");
 	int root_path_length = executable_path.length() - (strlen("./")+ strlen("XFS-Interface"));
-	string root_path("");
 
 	/*
 	* NITCbase/Files
@@ -643,9 +642,18 @@ int main(int argc, char* argv[]) {
 	}
 	// cout << DISK_PATH << " " << DISK_RUN_COPY_PATH << " " << FILES_PATH << endl;
 
-
 	// Initializing Open Relation Table
 	OpenRelTable::initializeOpenRelationTable();
+
+	// Taking Run Command as Command Line Argument(if provided)
+	if(argc == 3 && strcmp(argv[1], "run") == 0) {
+		string run_command("run ");
+		run_command.append(argv[2]);
+		int ret = regexMatchAndExecute(run_command);
+		if (ret == EXIT) {
+			return 0;
+		}
+	}
 
 	while (true) {
 		cout << "# ";
