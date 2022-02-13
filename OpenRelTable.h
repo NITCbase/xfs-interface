@@ -1,4 +1,4 @@
-/#ifndef B18_CODE_OPENRELTABLE_H
+#ifndef B18_CODE_OPENRELTABLE_H
 #define B18_CODE_OPENRELTABLE_H
 
 #include "../define/constants.h"
