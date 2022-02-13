@@ -1,7 +1,3 @@
-//
-// Created by Jessiya Joy on 17/10/21.
-//
-
 #include <cstring>
 #include <cstdio>
 #include <queue>

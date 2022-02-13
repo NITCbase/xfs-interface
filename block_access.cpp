@@ -1,6 +1,3 @@
-//
-// Created by Jessiya Joy on 17/08/21.
-//
 #include <cstdio>
 #include <string>
 #include <cstring>

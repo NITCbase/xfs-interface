@@ -1,7 +1,3 @@
-//
-// Created by Gokul Sreekumar on 16/08/21.
-//
-// TODO : review if we need to keep ';' at the end of commands
 #include <iostream>
 #include <fstream>
 #include <string>

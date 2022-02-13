@@ -1,7 +1,3 @@
-//
-// Created by Gokul Sreekumar on 06/06/21.
-//
-
 #ifndef B18_CODE_DISK_H
 #define B18_CODE_DISK_H
 

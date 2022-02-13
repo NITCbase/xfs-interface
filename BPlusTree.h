@@ -1,7 +1,3 @@
-//
-// Created by Jessiya Joy on 17/10/21.
-//
-
 #ifndef B18_CODE_BPLUSTREE_H
 #define B18_CODE_BPLUSTREE_H
 

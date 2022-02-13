@@ -1,7 +1,3 @@
-//
-// Created by Gokul Sreekumar on 16/08/21.
-//
-
 #ifndef B18_CODE_DISK_STRUCTURES_H
 #define B18_CODE_DISK_STRUCTURES_H
 
