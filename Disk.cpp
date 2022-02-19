@@ -34,7 +34,7 @@ int Disk::readBlock(unsigned char *block, int blockNum) {
 }
 
 int Disk::writeBlock(unsigned char *block, int blockNum) {
-	FILE *disk = fopen(&DISK_PATH[0], "wb");
+	FILE *disk = fopen(&DISK_PATH[0], "rb+");
 	int offset = blockNum * BLOCK_SIZE;
 	fseek(disk, offset, SEEK_SET);
 	fwrite(block, BLOCK_SIZE, 1, disk);
