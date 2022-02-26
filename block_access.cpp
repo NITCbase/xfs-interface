@@ -58,7 +58,7 @@ int ba_insert(int relId, Attribute *rec) {
 
 	// no free slot found
 	if (rec_id.block == -1 && rec_id.slot == -1) {
-		return FAILURE;
+		return E_DISKFULL;
 	} else if (rec_id.block == E_MAXRELATIONS && rec_id.slot == E_MAXRELATIONS) {
 		// only one block allowed for RELCAT
 		return E_MAXRELATIONS;
@@ -349,6 +349,11 @@ int ba_delete(char relName[ATTR_SIZE]) {
 	strcpy(relNameAsAttribute.sval, relName);
 	for (int i = 0; i < no_of_attrs; i++) {
 		attrcat_recid = linear_search(ATTRCAT_RELID, "RelName", relNameAsAttribute, EQ, &prev_recid);
+
+		if(attrcat_recid.block == -1 && attrcat_recid.slot == -1 ) {
+			continue;
+		}
+
 		getRecord(attrCatRecord, attrcat_recid.block, attrcat_recid.slot);
 
 		// Delete B+ tree blocks, if it exists for any of the attributes

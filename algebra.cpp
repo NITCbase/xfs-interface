@@ -252,11 +252,7 @@ int insert(std::vector<std::string> attributeTokens, char *table_name) {
 		return E_ATTRTYPEMISMATCH;
 
 	retValue = ba_insert(relId, record);
-	if (retValue == SUCCESS) {
-		return SUCCESS;
-	} else {
-		return FAILURE;
-	}
+	return retValue;
 }
 
 int insert(char relName[ATTR_SIZE], char *fileName) {
@@ -363,7 +359,7 @@ int insert(char relName[ATTR_SIZE], char *fileName) {
 
 		retValue = ba_insert(relId, record);
 		if (retValue != SUCCESS) {
-			return FAILURE;
+			return retValue;
 		}
 
 		if (currentCharacter == EOF)

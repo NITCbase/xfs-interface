@@ -845,6 +845,7 @@ int select_attr_from_where_handler(char sourceRelName[ATTR_SIZE], char targetRel
 		}
 		return SUCCESS;
 	} else {
+		printErrorMsg(ret);
 		return FAILURE;
 	}
 }

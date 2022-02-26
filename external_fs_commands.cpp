@@ -416,7 +416,7 @@ int importRelation(char *fileName) {
 			OpenRelTable::closeRelation(relId);
 			ba_delete(relationName);
 
-			cout << "Insert failed" << endl;
+			cout << "Insert failed at line"<< lineNumber << " in file"  << endl;
 			return retVal;
 		}
 		if (currentCharacter == EOF)

@@ -106,7 +106,7 @@ BPlusTree::BPlusTree(int relId, char attrName[ATTR_SIZE]) {
 
 			if (res != SUCCESS) {
 				bPlusDestroy(root_block);
-				this->rootBlock = FAILURE;
+				this->rootBlock = res;
 				return;
 			}
 		}
