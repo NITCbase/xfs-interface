@@ -1,5 +1,5 @@
-#ifndef B18_CODE_BPLUSTREE_H
-#define B18_CODE_BPLUSTREE_H
+#ifndef NITCBASE_BPLUSTREE_H
+#define NITCBASE_BPLUSTREE_H
 
 #include "../define/constants.h"
 #include "../define/errors.h"
@@ -19,4 +19,4 @@ public:
 	static int bPlusDestroy(int blockNum);
 };
 
-#endif //B18_CODE_BPLUSTREE_H
+#endif //NITCBASE_BPLUSTREE_H

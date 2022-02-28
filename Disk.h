@@ -1,5 +1,5 @@
-#ifndef B18_CODE_DISK_H
-#define B18_CODE_DISK_H
+#ifndef NITCBASE_DISK_H
+#define NITCBASE_DISK_H
 
 
 class Disk {
@@ -14,4 +14,4 @@ public:
 };
 
 
-#endif //B18_CODE_DISK_H
+#endif //NITCBASE_DISK_H

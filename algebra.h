@@ -1,5 +1,5 @@
-#ifndef B18_CODE_ALGEBRA_H
-#define B18_CODE_ALGEBRA_H
+#ifndef NITCBASE_ALGEBRA_H
+#define NITCBASE_ALGEBRA_H
 #include <vector>
 #include <string>
 
@@ -11,4 +11,4 @@ int checkAttrTypeOfValue(char *data);
 int constructRecordFromAttrsArray(int numAttrs, Attribute record[], char recordArray[][ATTR_SIZE], int attrTypes[]);
 int join(char srcrel1[ATTR_SIZE], char srcrel2[ATTR_SIZE], char targetRelation[ATTR_SIZE], char attr1[ATTR_SIZE], char attr2[ATTR_SIZE]);
 
-#endif //B18_CODE_ALGEBRA_H
+#endif //NITCBASE_ALGEBRA_H

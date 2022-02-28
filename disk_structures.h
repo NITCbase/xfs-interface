@@ -1,5 +1,5 @@
-#ifndef B18_CODE_DISK_STRUCTURES_H
-#define B18_CODE_DISK_STRUCTURES_H
+#ifndef NITCBASE_DISK_STRUCTURES_H
+#define NITCBASE_DISK_STRUCTURES_H
 
 #include <cstdint>
 #include "../define/constants.h"
@@ -76,4 +76,4 @@ typedef struct Index {
     unsigned char unused[8];
 } Index;
 
-#endif //B18_CODE_DISK_STRUCTURES_H
+#endif //NITCBASE_DISK_STRUCTURES_H

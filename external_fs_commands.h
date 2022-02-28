@@ -1,5 +1,5 @@
-#ifndef B18_CODE_EXTERNAL_FS_COMMANDS_H
-#define B18_CODE_EXTERNAL_FS_COMMANDS_H
+#ifndef NITCBASE_EXTERNAL_FS_COMMANDS_H
+#define NITCBASE_EXTERNAL_FS_COMMANDS_H
 
 void dump_relcat();
 void dump_attrcat();
@@ -9,4 +9,4 @@ int importRelation(char *fileName);
 int exportRelation(char *relname, char *filename);
 bool checkIfInvalidCharacter(char character);
 
-#endif //B18_CODE_EXTERNAL_FS_COMMANDS_H
+#endif //NITCBASE_EXTERNAL_FS_COMMANDS_H

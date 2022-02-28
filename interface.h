@@ -1,5 +1,5 @@
-#ifndef B18_CODE_INTERFACE_H
-#define B18_CODE_INTERFACE_H
+#ifndef NITCBASE_INTERFACE_H
+#define NITCBASE_INTERFACE_H
 
 #include<regex>
 
@@ -46,4 +46,4 @@ std::regex filename("[A-Za-z0-9_-]+\\.csv");
 std::regex filepath("(/.*\\.csv)");
 std::regex temp("\\((.*)\\)");
 
-#endif //B18_CODE_INTERFACE_H
+#endif //NITCBASE_INTERFACE_H

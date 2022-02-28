@@ -1,5 +1,5 @@
-#ifndef B18_CODE_BLOCK_ACCESS_H
-#define B18_CODE_BLOCK_ACCESS_H
+#ifndef NITCBASE_BLOCK_ACCESS_H
+#define NITCBASE_BLOCK_ACCESS_H
 
 int ba_insert(int relId, Attribute *rec);
 int ba_search(relId relid, union Attribute *record, char attrName[ATTR_SIZE], union Attribute attrval, int op, recId *prev_recid);
@@ -32,4 +32,4 @@ void setInternalEntry(InternalEntry internalEntry, int block, int offset);
 Index getLeafEntry(int leaf, int offset);
 void setLeafEntry(Index rec, int leaf, int offset);
 
-#endif //B18_CODE_BLOCK_ACCESS_H
+#endif //NITCBASE_BLOCK_ACCESS_H

@@ -1,5 +1,5 @@
-#ifndef B18_CODE_OPENRELTABLE_H
-#define B18_CODE_OPENRELTABLE_H
+#ifndef NITCBASE_OPENRELTABLE_H
+#define NITCBASE_OPENRELTABLE_H
 
 #include "../define/constants.h"
 #include "block_access.h"
@@ -23,4 +23,4 @@ public:
 	static int checkIfOpenRelTableHasFreeEntry();
 };
 
-#endif //B18_CODE_OPENRELTABLE_H
+#endif //NITCBASE_OPENRELTABLE_H
