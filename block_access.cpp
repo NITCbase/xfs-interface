@@ -749,7 +749,7 @@ int getRelCatEntry(int relationId, Attribute *relcat_entry) {
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_NOTOPEN;
+		return E_RELNOTOPEN;
 
 	char relName[16];
 	OpenRelTable::getRelationName(relationId, relName);
@@ -770,7 +770,7 @@ int setRelCatEntry(int relationId, Attribute *relcat_entry) {
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_NOTOPEN;
+		return E_RELNOTOPEN;
 
 	char relName[16];
 	OpenRelTable::getRelationName(relationId, relName);
@@ -793,7 +793,7 @@ int getAttrCatEntry(int relationId, char attrname[ATTR_SIZE], Attribute *attrcat
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_NOTOPEN;
+		return E_RELNOTOPEN;
 
 	char relName[ATTR_SIZE];
 
@@ -825,7 +825,7 @@ int getAttrCatEntry(int relationId, int offset, Attribute *attrCatEntry) {
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_NOTOPEN;
+		return E_RELNOTOPEN;
 
 	char relName[ATTR_SIZE];
 	OpenRelTable::getRelationName(relationId, relName);
@@ -856,7 +856,7 @@ int setAttrCatEntry(int relationId, char attrName[ATTR_SIZE], Attribute *attrCat
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_NOTOPEN;
+		return E_RELNOTOPEN;
 
 	char relName[ATTR_SIZE];
 	OpenRelTable::getRelationName(relationId, relName);
