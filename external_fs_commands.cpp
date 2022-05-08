@@ -135,45 +135,7 @@ void dumpBlockAllocationMap() {
 
 	FILE *fp_export = fopen(fileName, "w");
 
-    int totalNumberOfBlocks = 8192;
-    int totalNumberOfUnusedBlocks = 0;
-    int numberOfBlocksForBlockAllocationMap = 4;
-    int totalNumberOfRecordBlocks = 0;
-    int totalNumberOfIndexInternalBlocks = 0;
-    int totalNumberOfIndexLeafBlocks = 0;
-
-    for (blockNum = 4; blockNum < 8192; blockNum++) {
-        if ((int32_t) (blockAllocationMap[blockNum]) == UNUSED_BLK) {
-            totalNumberOfUnusedBlocks++;
-        }
-        if ((int32_t) (blockAllocationMap[blockNum]) == REC) {
-            totalNumberOfRecordBlocks++;
-        }
-        if ((int32_t) (blockAllocationMap[blockNum]) == IND_INTERNAL) {
-            totalNumberOfIndexInternalBlocks++;
-        }
-        if ((int32_t) (blockAllocationMap[blockNum]) == IND_LEAF) {
-            totalNumberOfIndexLeafBlocks++;
-        }
-    }
-
-    fputs("Number of blocks available (Unused) = ", fp_export);
-    sprintf(s, "%d / %d\n", totalNumberOfUnusedBlocks, totalNumberOfBlocks);
-    fputs(s, fp_export);
-    fputs("Number blocks for block allocation map = ", fp_export);
-    sprintf(s, "%d\n", numberOfBlocksForBlockAllocationMap);
-    fputs(s, fp_export);
-    fputs("Number record blocks = ", fp_export);
-    sprintf(s, "%d\n", totalNumberOfRecordBlocks);
-    fputs(s, fp_export);
-    fputs("Number internal index blocks = ", fp_export);
-    sprintf(s, "%d\n", totalNumberOfIndexInternalBlocks);
-    fputs(s, fp_export);
-    fputs("Number leaf index blocks = ", fp_export);
-    sprintf(s, "%d\n", totalNumberOfIndexLeafBlocks);
-    fputs(s, fp_export);
-
-    for (blockNum = 0; blockNum < 4; blockNum++) {
+	for (blockNum = 0; blockNum < 4; blockNum++) {
 		fputs("Block ", fp_export);
 		sprintf(s, "%d", blockNum);
 		fputs(s, fp_export);

@@ -749,7 +749,7 @@ int getRelCatEntry(int relationId, Attribute *relcat_entry) {
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_RELNOTOPEN;
+		return E_NOTOPEN;
 
 	char relName[16];
 	OpenRelTable::getRelationName(relationId, relName);
@@ -770,7 +770,7 @@ int setRelCatEntry(int relationId, Attribute *relcat_entry) {
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_RELNOTOPEN;
+		return E_NOTOPEN;
 
 	char relName[16];
 	OpenRelTable::getRelationName(relationId, relName);
@@ -793,7 +793,7 @@ int getAttrCatEntry(int relationId, char attrname[ATTR_SIZE], Attribute *attrcat
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_RELNOTOPEN;
+		return E_NOTOPEN;
 
 	char relName[ATTR_SIZE];
 
@@ -825,7 +825,7 @@ int getAttrCatEntry(int relationId, int offset, Attribute *attrCatEntry) {
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_RELNOTOPEN;
+		return E_NOTOPEN;
 
 	char relName[ATTR_SIZE];
 	OpenRelTable::getRelationName(relationId, relName);
@@ -856,7 +856,7 @@ int setAttrCatEntry(int relationId, char attrName[ATTR_SIZE], Attribute *attrCat
 		return E_OUTOFBOUND;
 
 	if (OpenRelTable::checkIfRelationOpen(relationId) == FAILURE)
-		return E_RELNOTOPEN;
+		return E_NOTOPEN;
 
 	char relName[ATTR_SIZE];
 	OpenRelTable::getRelationName(relationId, relName);
@@ -1029,7 +1029,7 @@ int compareAttributes(union Attribute attr1, union Attribute attr2, int attrType
 InternalEntry getInternalEntry(int block, int entryNum) {
 	InternalEntry rec;
 	FILE *disk = fopen(&DISK_PATH[0], "rb");
-	fseek(disk, block * BLOCK_SIZE + HEADER_SIZE + entryNum * INTERNAL_ENTRY_SIZE, SEEK_SET);
+	fseek(disk, block * BLOCK_SIZE + HEADER_SIZE + entryNum * (LCHILD_SIZE+ATTR_SIZE), SEEK_SET);
 
 	fread(&rec.lChild, 4, 1, disk);
 	fread(&rec.attrVal, 16, 1, disk);
@@ -1065,7 +1065,7 @@ void setInternalEntry(InternalEntry internalEntry, int block, int offset) {
 //	}
 
 	FILE *disk = fopen(&DISK_PATH[0], "rb+");
-	fseek(disk, block * BLOCK_SIZE + HEADER_SIZE + offset * INTERNAL_ENTRY_SIZE, SEEK_SET);
+	fseek(disk, block * BLOCK_SIZE + HEADER_SIZE + offset * (LCHILD_SIZE+ATTR_SIZE), SEEK_SET);
 	fwrite(&internalEntry.lChild, 4, 1, disk);
 	fwrite(&internalEntry.attrVal, 16, 1, disk);
 	fwrite(&internalEntry.rChild, 4, 1, disk);
