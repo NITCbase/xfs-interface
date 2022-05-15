@@ -684,7 +684,7 @@ int getRecord(Attribute *rec, int blockNum, int slotNum) {
 		fread(&R, BLOCK_SIZE, 1, disk);
 		int numSlots = R.numSlots;
 
-		if (*((int32_t *) (R.slotMap_Records + slotNum)) == 0)
+		if (R.slotMap_Records[slotNum] == SLOT_UNOCCUPIED)
 			return E_FREESLOT;
 		int numAttrs = R.numAttrs;
 
@@ -755,8 +755,8 @@ int getRelCatEntry(int relationId, Attribute *relcat_entry) {
 	OpenRelTable::getRelationName(relationId, relName);
 
 	for (int i = 0; i < 20; i++) {
-		getRecord(relcat_entry, 4, i);
-		if (strcmp(relcat_entry[0].sval, relName) == 0)
+		int retval = getRecord(relcat_entry, 4, i);
+		if (retval == SUCCESS && strcmp(relcat_entry[0].sval, relName) == 0)
 			return SUCCESS;
 	}
 	return FAILURE;
