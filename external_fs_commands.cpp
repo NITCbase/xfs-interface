@@ -443,8 +443,8 @@ int exportRelation(char *relname, char *filename) {
 	int firstBlock, numOfAttrs;
 	int slotNum;
 	for (slotNum = 0; slotNum < SLOTMAP_SIZE_RELCAT_ATTRCAT; slotNum++) {
-		getRecord(relcat_rec, RELCAT_BLOCK, slotNum);
-		if (strcmp(relcat_rec[0].sval, relname) == 0) {
+		int retval = getRecord(relcat_rec, RELCAT_BLOCK, slotNum);
+		if (retval == SUCCESS && strcmp(relcat_rec[0].sval, relname) == 0) {
 			firstBlock = (int) relcat_rec[3].nval;
 			numOfAttrs = (int) relcat_rec[1].nval;
 			break;
@@ -478,8 +478,8 @@ int exportRelation(char *relname, char *filename) {
 		headInfo = getHeader(recBlock_Attrcat);
 		nextRecBlock_Attrcat = headInfo.rblock;
 		for (slotNum = 0; slotNum < SLOTMAP_SIZE_RELCAT_ATTRCAT; slotNum++) {
-			getRecord(rec, recBlock_Attrcat, slotNum);
-			if (strcmp(rec[0].sval, relname) == 0) {
+			int retval = getRecord(rec, recBlock_Attrcat, slotNum);
+			if (retval == SUCCESS && strcmp(rec[0].sval, relname) == 0) {
 				// Attribute belongs to this Relation - add info to array
 				strcpy(attrName[attrNo], rec[1].sval);
 				attrType[attrNo] = (int) rec[2].nval;
