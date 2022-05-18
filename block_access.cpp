@@ -777,8 +777,8 @@ int setRelCatEntry(int relationId, Attribute *relcat_entry) {
 
 	Attribute relcat_entry1[6];
 	for (int i = 0; i < 20; i++) {
-		getRecord(relcat_entry1, 4, i);
-		if (strcmp(relcat_entry1[0].sval, relName) == 0) {
+		int retval = getRecord(relcat_entry1, 4, i);
+		if (retval == SUCCESS && strcmp(relcat_entry1[0].sval, relName) == 0) {
 			setRecord(relcat_entry, 4, i);
 			return SUCCESS;
 		}
@@ -806,8 +806,9 @@ int getAttrCatEntry(int relationId, char attrname[ATTR_SIZE], Attribute *attrcat
 		header = getHeader(curr_block);
 		next_block = header.rblock;
 		for (int i = 0; i < 20; i++) {
-			getRecord(attrcat_entry, curr_block, i);
-			if (strcmp(attrcat_entry[ATTRCAT_REL_NAME_INDEX].sval, relName) == 0) {
+			int retval = getRecord(attrcat_entry, curr_block, i);
+			if (retval == SUCCESS && 
+					strcmp(attrcat_entry[ATTRCAT_REL_NAME_INDEX].sval, relName) == 0) {
 				if (strcmp(attrcat_entry[ATTRCAT_ATTR_NAME_INDEX].sval, attrname) == 0)
 					return SUCCESS;
 			}
@@ -837,8 +838,9 @@ int getAttrCatEntry(int relationId, int offset, Attribute *attrCatEntry) {
 		header = getHeader(curr_block);
 		next_block = header.rblock;
 		for (int i = 0; i < 20; i++) {
-			getRecord(attrCatEntry, curr_block, i);
-			if (strcmp(attrCatEntry[0].sval, relName) == 0) {
+			int retval = getRecord(attrCatEntry, curr_block, i);
+			if (retval == SUCCESS &&
+					strcmp(attrCatEntry[0].sval, relName) == 0) {
 				if (static_cast<int>(attrCatEntry[5].nval) == offset)
 					return SUCCESS;
 			}
@@ -869,9 +871,12 @@ int setAttrCatEntry(int relationId, char attrName[ATTR_SIZE], Attribute *attrCat
 		next_block = header.rblock;
 		Attribute currentAttrCatEntry[NO_OF_ATTRS_RELCAT_ATTRCAT];
 		for (int slotIter = 0; slotIter < SLOTMAP_SIZE_RELCAT_ATTRCAT; slotIter++) {
-			getRecord(currentAttrCatEntry, curr_block, slotIter);
-			if (strcmp(currentAttrCatEntry[ATTRCAT_REL_NAME_INDEX].sval, relName) == 0) {
-				if (strcmp(currentAttrCatEntry[ATTRCAT_ATTR_NAME_INDEX].sval, attrName) == 0) {
+			int retval = getRecord(currentAttrCatEntry, curr_block, slotIter);
+			if (retval == SUCCESS &&
+					strcmp(currentAttrCatEntry[ATTRCAT_REL_NAME_INDEX].sval, 
+								 relName) == 0) {
+				if (strcmp(currentAttrCatEntry[ATTRCAT_ATTR_NAME_INDEX].sval, 
+						attrName) == 0) {
 					setRecord(attrCatEntry, curr_block, slotIter);
 					return SUCCESS;
 				}
