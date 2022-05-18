@@ -47,8 +47,9 @@ int OpenRelTable::openRelation(char relationName[ATTR_SIZE]) {
 	 */
 	int i;
 	for (i = 0; i < SLOTMAP_SIZE_RELCAT_ATTRCAT; i++) {
-		getRecord(relationCatalog, 4, i);
-		if (strcmp(relationCatalog[0].sval, relationName) == 0) {
+		int retval = getRecord(relationCatalog, 4, i);
+		if (retval == SUCCESS && 
+				strcmp(relationCatalog[0].sval, relationName) == 0) {
 			break;
 		}
 	}
