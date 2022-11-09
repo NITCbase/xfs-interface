@@ -1,7 +1,7 @@
 #include <string>
 #include <cstring>
-#include "../define/constants.h"
-#include "../define/errors.h"
+#include "define/constants.h"
+#include "define/errors.h"
 #include "disk_structures.h"
 #include "OpenRelTable.h"
 
@@ -48,7 +48,7 @@ int OpenRelTable::openRelation(char relationName[ATTR_SIZE]) {
 	int i;
 	for (i = 0; i < SLOTMAP_SIZE_RELCAT_ATTRCAT; i++) {
 		int retval = getRecord(relationCatalog, 4, i);
-		if (retval == SUCCESS && 
+		if (retval == SUCCESS &&
 				strcmp(relationCatalog[0].sval, relationName) == 0) {
 			break;
 		}

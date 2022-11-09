@@ -1,6 +1,8 @@
 #ifndef NITCBASE_BLOCK_ACCESS_H
 #define NITCBASE_BLOCK_ACCESS_H
 
+#include "disk_structures.h"
+
 int ba_insert(int relId, Attribute *rec);
 int ba_search(relId relid, union Attribute *record, char attrName[ATTR_SIZE], union Attribute attrval, int op, recId *prev_recid);
 recId linear_search(relId relid, char attrName[ATTR_SIZE], union Attribute attrval, int op, recId *prev_recid);

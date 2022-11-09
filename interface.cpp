@@ -4,8 +4,8 @@
 #include <cstring>
 #include <queue>
 
-#include "../define/constants.h"
-#include "../define/errors.h"
+#include "define/constants.h"
+#include "define/errors.h"
 #include "interface.h"
 #include "schema.h"
 #include "Disk.h"

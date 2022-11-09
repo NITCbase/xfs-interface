@@ -1,6 +1,6 @@
 #ifndef NITCBASE_SCHEMA_H
 #define NITCBASE_SCHEMA_H
-#include "../define/constants.h"
+#include "define/constants.h"
 #include "disk_structures.h"
 
 int createRel(char relname[16], int nAttrs, char attrs[][ATTR_SIZE], int attrtypes[]);

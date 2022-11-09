@@ -1,7 +1,7 @@
 #ifndef NITCBASE_OPENRELTABLE_H
 #define NITCBASE_OPENRELTABLE_H
 
-#include "../define/constants.h"
+#include "define/constants.h"
 #include "block_access.h"
 
 typedef struct OpenRelTableMetaInfo{

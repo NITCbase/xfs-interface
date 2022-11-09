@@ -2,8 +2,8 @@
 #include <string>
 #include <cstring>
 #include <iostream>
-#include "../define/constants.h"
-#include "../define/errors.h"
+#include "define/constants.h"
+#include "define/errors.h"
 #include "disk_structures.h"
 #include "schema.h"
 #include "OpenRelTable.h"
@@ -807,7 +807,7 @@ int getAttrCatEntry(int relationId, char attrname[ATTR_SIZE], Attribute *attrcat
 		next_block = header.rblock;
 		for (int i = 0; i < 20; i++) {
 			int retval = getRecord(attrcat_entry, curr_block, i);
-			if (retval == SUCCESS && 
+			if (retval == SUCCESS &&
 					strcmp(attrcat_entry[ATTRCAT_REL_NAME_INDEX].sval, relName) == 0) {
 				if (strcmp(attrcat_entry[ATTRCAT_ATTR_NAME_INDEX].sval, attrname) == 0)
 					return SUCCESS;
@@ -873,9 +873,9 @@ int setAttrCatEntry(int relationId, char attrName[ATTR_SIZE], Attribute *attrCat
 		for (int slotIter = 0; slotIter < SLOTMAP_SIZE_RELCAT_ATTRCAT; slotIter++) {
 			int retval = getRecord(currentAttrCatEntry, curr_block, slotIter);
 			if (retval == SUCCESS &&
-					strcmp(currentAttrCatEntry[ATTRCAT_REL_NAME_INDEX].sval, 
+					strcmp(currentAttrCatEntry[ATTRCAT_REL_NAME_INDEX].sval,
 								 relName) == 0) {
-				if (strcmp(currentAttrCatEntry[ATTRCAT_ATTR_NAME_INDEX].sval, 
+				if (strcmp(currentAttrCatEntry[ATTRCAT_ATTR_NAME_INDEX].sval,
 						attrName) == 0) {
 					setRecord(attrCatEntry, curr_block, slotIter);
 					return SUCCESS;

@@ -3,8 +3,8 @@
 #include <queue>
 #include <iostream>
 #include "BPlusTree.h"
-#include "../define/constants.h"
-#include "../define/errors.h"
+#include "define/constants.h"
+#include "define/errors.h"
 #include "disk_structures.h"
 #include "block_access.h"
 

@@ -3,8 +3,8 @@
 #include <cstring>
 #include <string>
 #include <unordered_set>
-#include "../define/constants.h"
-#include "../define/errors.h"
+#include "define/constants.h"
+#include "define/errors.h"
 #include "disk_structures.h"
 #include "algebra.h"
 #include "block_access.h"

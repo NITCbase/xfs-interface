@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
-#include "../define/constants.h"
+#include "define/constants.h"
 #include "Disk.h"
 #include "disk_structures.h"
 #include "block_access.h"

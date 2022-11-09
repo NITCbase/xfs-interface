@@ -1,5 +1,5 @@
-#include "../define/constants.h"
-#include "../define/errors.h"
+#include "define/constants.h"
+#include "define/errors.h"
 #include "disk_structures.h"
 #include "schema.h"
 #include "block_access.h"

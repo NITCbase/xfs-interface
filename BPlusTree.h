@@ -1,8 +1,8 @@
 #ifndef NITCBASE_BPLUSTREE_H
 #define NITCBASE_BPLUSTREE_H
 
-#include "../define/constants.h"
-#include "../define/errors.h"
+#include "define/constants.h"
+#include "define/errors.h"
 #include "disk_structures.h"
 
 class BPlusTree{
