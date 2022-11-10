@@ -186,7 +186,7 @@ int importRelation(char *fileName) {
 	 */
 	char *firstLine = (char *) malloc(sizeof(char));
 	int numOfCharactersInLine = 1;
-	char currentCharacter, previousCharacter;
+	int currentCharacter, previousCharacter;
 	int numOfAttributes = 1;
 	previousCharacter = ',';
 	while ((currentCharacter = fgetc(file)) != '\n') {

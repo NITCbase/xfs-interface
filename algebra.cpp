@@ -261,7 +261,7 @@ int insert(char relName[ATTR_SIZE], char *fileName) {
 		return E_INVALID;
 	}
 
-	char currentCharacter;
+	int currentCharacter;
 
 	// check if relation is open
 	int relId = OpenRelTable::getRelationId(relName);
