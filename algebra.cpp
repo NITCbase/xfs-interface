@@ -509,26 +509,16 @@ int join(char srcrel1[ATTR_SIZE], char srcrel2[ATTR_SIZE], char targetRelation[A
 	return SUCCESS;
 }
 
-
-// TODO : Find library functions for this?
 int checkAttrTypeOfValue(char *data) {
-	int count_int = 0, count_dot = 0, count_string = 0, i;
-	for (i = 0; data[i] != '\0'; i++) {
+	int len;
+	float ignore;
 
-		if (data[i] >= '0' && data[i] <= '9')
-			count_int++;
-		if (data[i] == '.')
-			count_dot++;
-		else
-			count_string++;
-	}
-
-	if (count_dot == 1 && count_int == (strlen(data) - 1))
+	int ret = sscanf(data, "%f %n", &ignore, &len);
+	if (ret == 1 && len == strlen(data)) {
 		return NUMBER;
-	if (count_int == strlen(data)) {
-		return NUMBER;
-	} else
+	} else {
 		return STRING;
+	}
 }
 
 /*
