@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <iomanip>
 #include <queue>
 
 #include "define/constants.h"
@@ -36,6 +37,8 @@ int getIndexOfFromToken(vector<string> command_tokens);
 int getIndexOfWhereToken(vector<string> command_tokens);
 
 string getAttrListStringFromCommand(string input_command, smatch m);
+
+int printSchema(char relname[ATTR_SIZE]);
 
 int select_from_handler(char sourceRelName[ATTR_SIZE], char targetRelName[ATTR_SIZE]);
 
@@ -184,6 +187,15 @@ int regexMatchAndExecute(const string input_command) {
 			cout << "Export Command Failed" << endl;
 			return FAILURE;
 		}
+
+	} else if (regex_match(input_command, schema)) {
+		regex_search(input_command, m, schema);
+		string tableName = m[2];
+
+		char relname[ATTR_SIZE];
+		string_to_char_array(tableName, relname, ATTR_SIZE - 1);
+
+		return printSchema(relname);
 
 	} else if (regex_match(input_command, open_table)) {
 
@@ -951,7 +963,7 @@ void display_help() {
 	printf("OPEN TABLE tablename ;\n\t-open the relation \n\n");
 	printf("CLOSE TABLE tablename ;\n\t-close the relation \n \n");
 	printf("CREATE INDEX ON tablename.attributename;\n\t-create an index on a given attribute. \n\n");
-	printf(" DROP INDEX ON tablename.attributename ; \n\t-delete the index. \n\n");
+	printf("DROP INDEX ON tablename.attributename ; \n\t-delete the index. \n\n");
 	printf("ALTER TABLE RENAME tablename TO new_tablename ;\n\t-rename an existing relation to a given new name. \n\n");
 	printf("ALTER TABLE RENAME tablename COLUMN column_name TO new_column_name ;\n\t-rename an attribute of an existing relation.\n\n");
 	printf("INSERT INTO tablename VALUES ( value1,value2,value3,... );\n\t-insert a single record into the given relation. \n\n");
@@ -1259,4 +1271,72 @@ int getRootBlock(char *rel_name, char *attr_name, int &attrType) {
 	}
 
 	return rootBlock;
+}
+
+template <typename T>
+void printTabular(T t, const int& width) {
+	cout << left << setw(width) << setfill(' ') << t;
+}
+
+int printSchema(char relname[ATTR_SIZE]){
+	Attribute relcat_rec[6];
+	cout<<"relname "<<relname<<endl;
+	int numOfAttrs = -1;
+	for (int slotNum = 0; slotNum < SLOTMAP_SIZE_RELCAT_ATTRCAT; slotNum++) {
+		int retval = getRecord(relcat_rec, RELCAT_BLOCK, slotNum);
+		if (retval == SUCCESS && strcmp(relcat_rec[0].sval, relname) == 0) {
+			numOfAttrs = (int) relcat_rec[1].nval;
+			break;
+		}
+	}
+
+	if (numOfAttrs == -1) {
+		cout << "The relation does not exist\n";
+		return FAILURE;
+	}
+
+	Attribute rec[6];
+
+	int recBlock_Attrcat = ATTRCAT_BLOCK;
+	int nextRecBlock_Attrcat;
+
+	// Array for attribute names and types
+	int attrNo = 0;
+	char attrName[numOfAttrs][ATTR_SIZE];
+	int attrType[numOfAttrs];
+	bool attrIndexed[numOfAttrs];
+
+	/*
+	 * Searching the Attribute Catalog Disk Blocks
+	 * for finding and storing all the attributes of the given relation
+	 */
+	while (recBlock_Attrcat != -1) {
+		HeadInfo headInfo = getHeader(recBlock_Attrcat);
+		nextRecBlock_Attrcat = headInfo.rblock;
+		for (int slotNum = 0; slotNum < SLOTMAP_SIZE_RELCAT_ATTRCAT; slotNum++) {
+			int retval = getRecord(rec, recBlock_Attrcat, slotNum);
+			if (retval == SUCCESS && strcmp(rec[0].sval, relname) == 0) {
+				// Attribute belongs to this Relation - add info to array
+				strcpy(attrName[attrNo], rec[1].sval);
+				attrType[attrNo] = (int) rec[2].nval;
+				attrIndexed[attrNo] = ((int)rec[4].nval) != -1;
+				attrNo++;
+			}
+		}
+		recBlock_Attrcat = nextRecBlock_Attrcat;
+	}
+
+	cout << "Relation: ";
+	print16(relname);
+	printTabular("Attribute", ATTR_SIZE + 1);
+	printTabular("Type", 5);
+	printTabular("Index", 5);
+	cout << "\n---------------- ---- -----\n";
+	for (int i = 0; i < numOfAttrs; ++i) {
+		printTabular(attrName[i], ATTR_SIZE + 1);
+		printTabular(attrType[i] == NUMBER ? "NUM" : "STR", 5);
+		printTabular(attrIndexed[i] ? "yes" : "no", 5);
+		cout << endl;
+	}
+	return SUCCESS;
 }
