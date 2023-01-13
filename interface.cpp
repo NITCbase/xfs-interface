@@ -4,6 +4,8 @@
 #include <cstring>
 #include <iomanip>
 #include <queue>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 #include "define/constants.h"
 #include "define/errors.h"
@@ -686,12 +688,15 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	while (true) {
-		cout << "# ";
-		string input_command;
-		smatch m;
-		getline(cin, input_command);
-		int ret = regexMatchAndExecute(input_command);
+	char *buf;
+	while ((buf = readline("# ")) != nullptr) {
+		rl_bind_key('\t', rl_insert);
+		if(strlen(buf) > 0){
+			add_history(buf);
+		}
+		// getline(cin, input_command);
+		int ret = regexMatchAndExecute(string(buf));
+		free(buf);
 		if (ret == EXIT) {
 			return 0;
 		}
