@@ -702,12 +702,11 @@ int main(int argc, char* argv[]) {
 	}
 
 	char *buf;
+	rl_bind_key('\t', rl_insert);
 	while ((buf = readline("# ")) != nullptr) {
-		rl_bind_key('\t', rl_insert);
 		if(strlen(buf) > 0){
 			add_history(buf);
 		}
-		// getline(cin, input_command);
 		int ret = regexMatchAndExecute(string(buf));
 		free(buf);
 		if (ret == EXIT) {
