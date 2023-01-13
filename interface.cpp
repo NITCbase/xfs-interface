@@ -960,6 +960,8 @@ void display_help() {
 	printf("import <filename> \n\t -loads relations from the UNIX filesystem to the XFS disk. \n\n");
 	printf("export <tablename> <filename> \n\t -export a relation from XFS disk to UNIX file system. \n\n");
 	printf("ls \n\t  -list the names of all relations in the xfs disk. \n\n");
+	printf("echo <any message> \n\t  -echo back the given string. \n\n");
+	printf("run <filename> \n\t  -run commands from an input file in sequence. \n\n");
 	printf("schema <tablename> \n\t-view the schema of a relation. \n\n");
 	printf("print b+ tree tablename.attributename \n\t-print the b+ tree of an indexed attribute. \n\n");
 	printf("print b+ blocks tablename.attributename \n\t-print the data stored in the index blocks of an indexed attribute. \n\n");
