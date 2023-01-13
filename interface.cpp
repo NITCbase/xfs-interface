@@ -66,7 +66,7 @@ int getRootBlock(char *rel_name, char *attr_name, int &attrType);
 
 void printBPlusTree(int rootBlock, int attrType);
 
-void printBPlusTreeBlocks(int blockNum, int attrType);
+int exportBPlusTreeBlocks(int blockNum, int attrType, FILE *fp_export);
 
 
 /* TODO: RETURN 0 here means Success, return -1 (EXIT or FAILURE) means quit XFS,
@@ -110,6 +110,8 @@ int regexMatchAndExecute(const string input_command) {
 		regex_search(input_command, m, bplus_blocks);
 		string tablename = m[4];
 		string attrname = m[5];
+		string filePath = m[6];
+		filePath = OUTPUT_FILES_PATH + filePath;
 		char relname[ATTR_SIZE], attr_name[ATTR_SIZE];
 
 		string_to_char_array(tablename, relname, ATTR_SIZE - 1);
@@ -121,8 +123,19 @@ int regexMatchAndExecute(const string input_command) {
 			printErrorMsg(rootBlock);
 			return FAILURE;
 		}
-		cout << "----- B+ TREE BLOCKS -----" << endl;
-		printBPlusTreeBlocks(rootBlock, attrType);
+
+		FILE *fp_export = fopen(filePath.c_str(), "w");
+		if (!fp_export) {
+			cout << " Invalid file path" << endl;
+			return FAILURE;
+		}
+		fputs("----- B+ TREE BLOCKS -----\n", fp_export);
+		exportBPlusTreeBlocks(rootBlock, attrType, fp_export);
+		fclose(fp_export);
+		cout << "Exported index blocks of ";
+		print16(relname, false);
+		cout << " successfully to: " << filePath << endl;
+
 	} else if (regex_match(input_command, fdisk)) {
 		Disk::createDisk();
 		Disk::formatDisk();
@@ -167,8 +180,8 @@ int regexMatchAndExecute(const string input_command) {
 			printErrorMsg(ret);
 			return FAILURE;
 		}
-	} else if (regex_match(input_command, exp)) {
-		regex_search(input_command, m, exp);
+	} else if (regex_match(input_command, exprt)) {
+		regex_search(input_command, m, exprt);
 		string tableName = m[2];
 
 		string filePath = m[3];
@@ -958,13 +971,13 @@ int executeCommandsFromFile(const string fileName) {
 void display_help() {
 	printf("fdisk \n\t -Format disk \n\n");
 	printf("import <filename> \n\t -loads relations from the UNIX filesystem to the XFS disk. \n\n");
-	printf("export <tablename> <filename> \n\t -export a relation from XFS disk to UNIX file system. \n\n");
+	printf("export <tablename> <filename>.csv \n\t -export a relation from XFS disk to UNIX file system. \n\n");
 	printf("ls \n\t  -list the names of all relations in the xfs disk. \n\n");
 	printf("echo <any message> \n\t  -echo back the given string. \n\n");
 	printf("run <filename> \n\t  -run commands from an input file in sequence. \n\n");
 	printf("schema <tablename> \n\t-view the schema of a relation. \n\n");
 	printf("print b+ tree tablename.attributename \n\t-print the b+ tree of an indexed attribute. \n\n");
-	printf("print b+ blocks tablename.attributename \n\t-print the data stored in the index blocks of an indexed attribute. \n\n");
+	printf("export b+ blocks tablename.attributename <filename>.txt \n\t-export the data stored in the index blocks of an indexed attribute. \n\n");
 	printf("dump bmap \n\t-dump the contents of the block allocation map.\n\n");
 	printf("dump relcat \n\t-copy the contents of relation catalog to relationcatalog.txt\n \n");
 	printf("dump attrcat \n\t-copy the contents of attribute catalog to an attributecatalog.txt. \n\n");
@@ -1081,59 +1094,57 @@ void string_to_char_array(string x, char *a, int size) {
 	}
 }
 
-void printBPlusTreeBlocks(int blockNum, int attrType) {
+int exportBPlusTreeBlocks(int blockNum, int attrType, FILE *fp_export) {
 	HeadInfo header = getHeader(blockNum);
 	int block_type = getBlockType(blockNum);
 	int num_entries = header.numEntries;
 
-	cout << "BLOCK " << blockNum << endl;
-	cout << "Block Type: ";
-	if (block_type == 1)
-		cout << "IND_INTERNAL" << endl;
-	else if (block_type == 2)
-		cout << "IND_LEAF" << endl;
-	cout << "Parent Block: " << header.pblock << endl;
-	cout << "No of entries: " << num_entries << endl;
+	fprintf(fp_export, "BLOCK %d\n", blockNum);
+	fprintf(fp_export, "Block Type: %s\n", block_type == 1 ? "IND_INTERNAL" : block_type == 2 ? "IND_LEAF" : "");
+	fprintf(fp_export, "Parent Block: %d\n", header.pblock);
+	fprintf(fp_export, "No of entries: %d\n", num_entries);
 
 	if (block_type == IND_INTERNAL) {
 		InternalEntry internal_entry;
 		for (int iter = 0; iter < num_entries; iter++) {
 			internal_entry = getInternalEntry(blockNum, iter);
-			cout << "lchild: " << internal_entry.lChild << ", ";
+			fprintf(fp_export, "lchild: %d, ", internal_entry.lChild);
 			if (attrType == NUMBER) {
-				cout << "key_val: " << internal_entry.attrVal.nval << ", ";
+				fprintf(fp_export, "key_val: %.2f, ", internal_entry.attrVal.nval);
 			} else {
-				cout << "key_val: " << internal_entry.attrVal.sval << ", ";
+				fprintf(fp_export, "key_val: %s, ", internal_entry.attrVal.sval);
 			}
-			cout << "rchild: " << internal_entry.rChild << endl;
+			fprintf(fp_export, "rchild: %d\n", internal_entry.rChild);
 		}
 	} else if (block_type == IND_LEAF) {
-		cout << "left node: " << header.lblock << ", ";
-		cout << "right node: " << header.rblock << endl;
+		fprintf(fp_export, "left node: %d, ", header.lblock);
+		fprintf(fp_export, "right node: %d\n", header.rblock);
 		for (int iter = 0; iter < num_entries; iter++) {
 			Index index = getLeafEntry(blockNum, iter);
 			if (attrType == NUMBER) {
-				cout << "key_val: " << index.attrVal.nval << endl;
+				fprintf(fp_export, "key_val: %.2f\n", index.attrVal.nval);
 			} else {
-				cout << "key_val: " << index.attrVal.sval << endl;
+				fprintf(fp_export, "key_val: %s\n", index.attrVal.sval);
 			}
 
 		}
 	}
-	cout << "---------" << endl;
+	fputs("---------\n", fp_export);
 
 	if (block_type == IND_INTERNAL) {
 		InternalEntry internal_entry;
 
 		int entry_num = 0;
 		internal_entry = getInternalEntry(blockNum, entry_num);
-		printBPlusTreeBlocks(internal_entry.lChild, attrType);
+		exportBPlusTreeBlocks(internal_entry.lChild, attrType, fp_export);
 
 		for (entry_num = 0; entry_num < num_entries; entry_num++) {
 			internal_entry = getInternalEntry(blockNum, entry_num);
-			printBPlusTreeBlocks(internal_entry.rChild, attrType);
+			exportBPlusTreeBlocks(internal_entry.rChild, attrType, fp_export);
 		}
 	}
+
+	return SUCCESS;
 }
 
 void printBPlusNode(int block, int attrType) {
