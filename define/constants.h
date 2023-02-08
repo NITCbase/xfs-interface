@@ -89,6 +89,8 @@
 #define IND_LEAF 2
 // Block type for an Unused (Free) Block
 #define UNUSED_BLK 3
+// Block type for the block allocation map
+#define BMAP 4
 
 // Operators
 // Equal to

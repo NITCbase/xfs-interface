@@ -939,7 +939,6 @@ void print16(char char_string_thing[ATTR_SIZE], bool newline) {
 	return;
 }
 
-// TODO: What to do when one line Fails - EXIT?
 int executeCommandsFromFile(const string fileName) {
 	const string filePath = BATCH_FILES_PATH;
 	fstream commandsFile;

@@ -55,10 +55,9 @@ void Disk::formatDisk() {
 	unsigned char blockAllocationMap[BLOCK_SIZE * BLOCK_ALLOCATION_MAP_SIZE];
 
 	// reserved_blocks Entries in Block Allocation Map (Used)
-    // TODO: Type for BLOCK ALLOCATION MAP block required and replace 1 with it.
 	for (int i = 0; i < reserved_blocks; i++) {
 		if (i >= 0 && i <= 3)
-            blockAllocationMap[i] = (unsigned char) 1;
+            blockAllocationMap[i] = (unsigned char) BMAP;
 		else
             blockAllocationMap[i] = (unsigned char) REC;
 	}
