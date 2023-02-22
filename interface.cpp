@@ -1299,7 +1299,6 @@ void printTabular(T t, const int& width) {
 
 int printSchema(char relname[ATTR_SIZE]){
 	Attribute relcat_rec[6];
-	cout<<"relname "<<relname<<endl;
 	int numOfAttrs = -1;
 	for (int slotNum = 0; slotNum < SLOTMAP_SIZE_RELCAT_ATTRCAT; slotNum++) {
 		int retval = getRecord(relcat_rec, RELCAT_BLOCK, slotNum);
