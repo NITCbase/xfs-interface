@@ -42,6 +42,8 @@ string getAttrListStringFromCommand(string input_command, smatch m);
 
 int printSchema(char relname[ATTR_SIZE]);
 
+int printRows(char relname[ATTR_SIZE]);
+
 int select_from_handler(char sourceRelName[ATTR_SIZE], char targetRelName[ATTR_SIZE]);
 
 int select_from_where_handler(char sourceRelName[ATTR_SIZE], char targetRelName[ATTR_SIZE], char attribute[ATTR_SIZE],
@@ -136,12 +138,20 @@ int regexMatchAndExecute(const string input_command) {
 		print16(relname, false);
 		cout << " successfully to: " << filePath << endl;
 
-	} else if (regex_match(input_command, fdisk)) {
-		Disk::createDisk();
-		Disk::formatDisk();
-		// Re-initialize OpenRelTable
-		OpenRelTable::initializeOpenRelationTable();
-		cout << "Disk formatted" << endl;
+	} else if (regex_match(input_command, print_table)) {
+		regex_search(input_command, m, print_table);
+		string tableName = m[3];
+
+		char relname[ATTR_SIZE];
+		string_to_char_array(tableName, relname, ATTR_SIZE - 1);
+
+		int ret = printRows(relname);
+
+		if (ret != SUCCESS) {
+			cout << "Print Command Failed" << endl;
+			return FAILURE;
+		}
+
 	} else if (regex_match(input_command, dump_rel)) {
 		dump_relcat();
 		cout << "Dumped relation catalog to " << OUTPUT_FILES_PATH << "relation_catalog" << endl;
@@ -1356,5 +1366,121 @@ int printSchema(char relname[ATTR_SIZE]){
 		printTabular(attrIndexed[i] ? "yes" : "no", 5);
 		cout << endl;
 	}
+	return SUCCESS;
+}
+
+int printRows(char relname[ATTR_SIZE]){
+	HeadInfo headInfo;
+	Attribute relcat_rec[6];
+
+	int firstBlock, numOfAttrs;
+	int slotNum;
+	for (slotNum = 0; slotNum < SLOTMAP_SIZE_RELCAT_ATTRCAT; slotNum++) {
+		int retval = getRecord(relcat_rec, RELCAT_BLOCK, slotNum);
+		if (retval == SUCCESS && strcmp(relcat_rec[0].sval, relname) == 0) {
+			firstBlock = (int) relcat_rec[3].nval;
+			numOfAttrs = (int) relcat_rec[1].nval;
+			break;
+		}
+	}
+
+	if (slotNum == SLOTMAP_SIZE_RELCAT_ATTRCAT) {
+		cout << "The relation does not exist\n";
+		return FAILURE;
+	}
+	if (firstBlock == -1) {
+		cout << "No records exist for the relation\n";
+		return FAILURE;
+	}
+
+	Attribute rec[6];
+
+	int recBlock_Attrcat = ATTRCAT_BLOCK;
+	int nextRecBlock_Attrcat;
+
+	// Array for attribute names and types
+	int attrNo = 0;
+	char attrName[numOfAttrs][ATTR_SIZE];
+	int attrType[numOfAttrs];
+
+	/*
+	 * Searching the Attribute Catalog Disk Blocks
+	 * for finding and storing all the attributes of the given relation
+	 */
+	while (recBlock_Attrcat != -1) {
+		headInfo = getHeader(recBlock_Attrcat);
+		nextRecBlock_Attrcat = headInfo.rblock;
+		for (slotNum = 0; slotNum < SLOTMAP_SIZE_RELCAT_ATTRCAT; slotNum++) {
+			int retval = getRecord(rec, recBlock_Attrcat, slotNum);
+			if (retval == SUCCESS && strcmp(rec[0].sval, relname) == 0) {
+				// Attribute belongs to this Relation - add info to array
+				strcpy(attrName[attrNo], rec[1].sval);
+				attrType[attrNo] = (int) rec[2].nval;
+				attrNo++;
+			}
+		}
+		recBlock_Attrcat = nextRecBlock_Attrcat;
+	}
+
+	// Write the Attribute names to console
+	cout<<"| ";
+	for (attrNo = 0; attrNo < numOfAttrs; attrNo++) {
+		printTabular(attrName[attrNo], ATTR_SIZE-1);
+		cout<<" |";
+	}
+
+	cout << std::endl << "| ";
+
+	for (attrNo = 0; attrNo < numOfAttrs; attrNo++) {
+		printTabular("---------------", ATTR_SIZE-1);
+		cout<<" |";
+	}
+	cout << std::endl;
+
+	int block_num = firstBlock;
+	int num_slots;
+	int num_attrs;
+
+	/*
+	 * Iterate over the record blocks of this relation
+	 * Linked list traversal
+	 */
+	while (block_num != -1) {
+		headInfo = getHeader(block_num);
+
+		num_slots = headInfo.numSlots;
+		num_attrs = headInfo.numAttrs;
+		nextRecBlock_Attrcat = headInfo.rblock;
+
+		unsigned char slotmap[num_slots];
+		getSlotmap(slotmap, block_num);
+
+		Attribute A[num_attrs];
+		slotNum = 0;
+		// Go through all slots and write the record entry to file
+		for (slotNum = 0; slotNum < num_slots; slotNum++) {
+			if (slotmap[slotNum] == SLOT_OCCUPIED) {
+				getRecord(A, block_num, slotNum);
+
+				cout << "| ";
+				for (int l = 0; l < numOfAttrs; l++) {
+					if (attrType[l] == NUMBER) {
+						char s[ATTR_SIZE];
+						sprintf(s, "%-15.2f", A[l].nval);
+						printTabular(s, ATTR_SIZE - 1);
+
+					} else if (attrType[l] == STRING) {
+						printTabular(A[l].sval, ATTR_SIZE - 1);
+					}
+					cout << " |";
+				}
+
+				cout << std::endl;
+			}
+		}
+
+		block_num = nextRecBlock_Attrcat;
+	}
+
 	return SUCCESS;
 }

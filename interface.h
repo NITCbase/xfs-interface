@@ -17,6 +17,7 @@ std::regex ex("\\s*(EXIT|exit)\\s*\\s*;?");
 std::regex run("\\s*(RUN|run)\\s+([a-zA-Z0-9_/.-]+)\\s*;?");
 std::regex echo("\\s*(ECHO|echo)\\s+([a-zA-Z0-9 _,()'?:+*.-]+)\\s*;?");
 std::regex bplus_tree("\\s*(PRINT|print)\\s+(B\\+|b\\+)\\s+(TREE|tree)\\s+([A-Za-z0-9_-]+)\\s*\\.\\s*([A-Za-z0-9_-]+)\\s*;?");
+std::regex print_table("\\s*(PRINT|print)\\s+(TABLE|table)\\s+([A-Za-z0-9_-]+)\\s*;?");
 std::regex bplus_blocks("\\s*(EXPORT|export)\\s+(B\\+|b\\+)\\s+(BLOCKS|blocks)\\s+([A-Za-z0-9_-]+)\\s*\\.\\s*([A-Za-z0-9_-]+)\\s+([a-zA-Z0-9_-]+\\.txt)\\s*;?");
 // std::regex run("\\s*(RUN|run)\\s+([a-zA-Z0-9_-]+\\.txt)\\s*;?"); // IF WE NEED .txt in run file name
 
