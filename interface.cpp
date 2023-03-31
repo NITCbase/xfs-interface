@@ -893,6 +893,7 @@ void display_help() {
 	printf("fdisk \n\t -Format disk \n\n");
 	printf("import <filename> \n\t -loads relations from the UNIX filesystem to the XFS disk. \n\n");
 	printf("export <tablename> <filename>.csv \n\t -export a relation from XFS disk to UNIX file system. \n\n");
+	printf("print table <tablename> \n\t-print all the rows of a relation in the XFS disk. \n\n");
 	printf("ls \n\t  -list the names of all relations in the xfs disk. \n\n");
 	printf("echo <any message> \n\t  -echo back the given string. \n\n");
 	printf("run <filename> \n\t  -run commands from an input file in sequence. \n\n");
