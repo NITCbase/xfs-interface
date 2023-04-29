@@ -39,7 +39,7 @@ std::regex select_attr_from_where("\\s*SELECT\\s+((?:[#A-Za-z0-9_-]+\\s*,\\s*)*[
 std::regex select_from_join("\\s*SELECT\\s+\\*\\s+FROM\\s+([A-Za-z0-9_-]+)\\s+JOIN\\s+([A-Za-z0-9_-]+)\\s+INTO\\s+([A-Za-z0-9_-]+)\\s+WHERE\\s+([A-Za-z0-9_-]+)\\s*\\.([#A-Za-z0-9_-]+)\\s*\\=\\s*([A-Za-z0-9_-]+)\\s*\\.([#A-Za-z0-9_-]+)\\s*;?", std::regex_constants::icase);
 std::regex select_attr_from_join("\\s*SELECT\\s+((?:[#A-Za-z0-9_-]+\\s*,\\s*)*[#A-Za-z0-9_-]+)\\s+FROM\\s+([A-Za-z0-9_-]+)\\s+JOIN\\s+([A-Za-z0-9_-]+)\\s+INTO\\s+([A-Za-z0-9_-]+)\\s+WHERE\\s+([A-Za-z0-9_-]+)\\s*\\.([#A-Za-z0-9_-]+)\\s*\\=\\s*([A-Za-z0-9_-]+)\\s*\\.([#A-Za-z0-9_-]+)\\s*;?", std::regex_constants::icase);
 std::regex insert_single("\\s*INSERT\\s+INTO\\s+([A-Za-z0-9_-]+)\\s+VALUES\\s*\\(\\s*(([A-Za-z0-9_-]+|[0-9]+\\.[0-9]+)\\s*,\\s*)*([A-Za-z0-9_-]+|[0-9]+\\.[0-9]+)\\s*\\)\\s*;?", std::regex_constants::icase);
-std::regex insert_multiple("\\s*INSERT\\s+INTO\\s+([A-Za-z0-9_-]+)\\s+VALUES\\s+FROM\\s+([a-zA-Z0-9_-]+\\.csv)\\s*;?");
+std::regex insert_multiple("\\s*INSERT\\s+INTO\\s+([A-Za-z0-9_-]+)\\s+VALUES\\s+FROM\\s+([a-zA-Z0-9_-]+\\.csv)\\s*;?", std::regex_constants::icase);
 
 std::regex temp("\\((.*)\\)");
 
