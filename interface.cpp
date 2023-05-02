@@ -562,29 +562,33 @@ int regexMatchAndExecute(const string input_command) {
 
 		regex_search(input_command, m, select_from_join);
 
-		// m[1] and m[4] should be equal ( = sourceRelOneName)
-		// m[2] and m[6] should be equal ( = sourceRelTwoName)
-		if (m[1] != m[4] || m[2] != m[6]) {
-			cout << "Syntax Error" << endl;
-			return FAILURE;
-		}
 		char sourceRelOneName[ATTR_SIZE];
 		char sourceRelTwoName[ATTR_SIZE];
 		char targetRelName[ATTR_SIZE];
 		char joinAttributeOne[ATTR_SIZE];
 		char joinAttributeTwo[ATTR_SIZE];
 
-        // m[8] = Target Relation Name
-        if (m[8] == TEMP) {
-            printErrorMsg(E_TARGETNAMETEMP);
-            return FAILURE;
-        }
+		if (m[3] == TEMP) {
+				printErrorMsg(E_TARGETNAMETEMP);
+				return FAILURE;
+		}
 
 		string_to_char_array(m[1], sourceRelOneName, ATTR_SIZE - 1);
 		string_to_char_array(m[2], sourceRelTwoName, ATTR_SIZE - 1);
 		string_to_char_array(m[3], targetRelName, ATTR_SIZE - 1);
-		string_to_char_array(m[5], joinAttributeOne, ATTR_SIZE - 1);
-		string_to_char_array(m[7], joinAttributeTwo, ATTR_SIZE - 1);
+
+		if (m[1] == m[4] && m[2] == m[6]) {
+			string_to_char_array(m[5], joinAttributeOne, ATTR_SIZE - 1);
+			string_to_char_array(m[7], joinAttributeTwo, ATTR_SIZE - 1);
+
+		} else if(m[1] == m[6] && m[2] == m[4]){
+			string_to_char_array(m[7], joinAttributeOne, ATTR_SIZE - 1);
+			string_to_char_array(m[5], joinAttributeTwo, ATTR_SIZE - 1);
+
+		} else {
+			cout << "Syntax Error: Relation names do not match" << endl;
+			return FAILURE;
+		}
 
 		int ret = join(sourceRelOneName, sourceRelTwoName, targetRelName, joinAttributeOne, joinAttributeTwo);
 		if (ret == SUCCESS) {
@@ -595,13 +599,8 @@ int regexMatchAndExecute(const string input_command) {
 		}
 
 	} else if (regex_match(input_command, select_attr_from_join)) {
-		// m[2] and m[5] should be equal ( = sourceRelOneName)
-		// m[3] and m[7] should be equal ( = sourceRelTwoName)
+
 		regex_search(input_command, m, select_attr_from_join);
-		if (m[2] != m[5] || m[3] != m[7]) {
-			cout << "Syntax Error" << endl;
-			return FAILURE;
-		}
 
 		char sourceRelOneName[ATTR_SIZE];
 		char sourceRelTwoName[ATTR_SIZE];
@@ -609,16 +608,25 @@ int regexMatchAndExecute(const string input_command) {
 		char joinAttributeOne[ATTR_SIZE];
 		char joinAttributeTwo[ATTR_SIZE];
 
-        if (m[4]== TEMP) {
-            printErrorMsg(E_TARGETNAMETEMP);
-            return FAILURE;
-        }
+		if (m[4]== TEMP) {
+				printErrorMsg(E_TARGETNAMETEMP);
+				return FAILURE;
+		}
 
 		string_to_char_array(m[2], sourceRelOneName, ATTR_SIZE - 1);
 		string_to_char_array(m[3], sourceRelTwoName, ATTR_SIZE - 1);
 		string_to_char_array(m[4], targetRelName, ATTR_SIZE - 1);
-		string_to_char_array(m[6], joinAttributeOne, ATTR_SIZE - 1);
-		string_to_char_array(m[8], joinAttributeTwo, ATTR_SIZE - 1);
+
+		if (m[2] == m[5] && m[3] == m[7]){
+			string_to_char_array(m[6], joinAttributeOne, ATTR_SIZE - 1);
+			string_to_char_array(m[8], joinAttributeTwo, ATTR_SIZE - 1);
+		} else if(m[2] == m[7] && m[3] == m[5]){
+			string_to_char_array(m[8], joinAttributeOne, ATTR_SIZE - 1);
+			string_to_char_array(m[6], joinAttributeTwo, ATTR_SIZE - 1);
+		} else {
+			cout << "Syntax Error: Relation names do not match" << endl;
+			return FAILURE;
+		}
 
 		vector<string> attributesListAsWords = extract_tokens(m[1]);
 		int attrCount = attributesListAsWords.size();
