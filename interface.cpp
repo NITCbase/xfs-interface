@@ -822,11 +822,11 @@ int select_attr_from_join_handler(char sourceRelOneName[ATTR_SIZE], char sourceR
 		}
 
 		int ret_project = project(TEMP, targetRelName, attrCount, attributeList);
+		OpenRelTable::closeRelation(relId);
+		deleteRel(TEMP);
 
 		if (ret_project == SUCCESS) {
 			cout << "Join successful" << endl;
-			OpenRelTable::closeRelation(relId);
-			deleteRel(TEMP);
 			return SUCCESS;
 		} else {
 			printErrorMsg(ret_project);
