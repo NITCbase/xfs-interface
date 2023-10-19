@@ -944,7 +944,9 @@ int deleteRelCatEntry(recId relcat_recid, Attribute relcat_rec[6]) {
 	relcat_rec[2].nval = relcat_rec[2].nval - 1;
 	setRecord(relcat_rec, 4, 0);
 
-	int no_of_attrs = relcat_rec[1].nval;
+	getRecord(relcat_rec, 4, relcat_recid.slot);
+	int no_of_attrs = relcat_rec[2].nval;
+	
 	getRecord(relcat_rec, 4, 1);
 	relcat_rec[2].nval = relcat_rec[2].nval - no_of_attrs;
 	setRecord(relcat_rec, 4, 1);
